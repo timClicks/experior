@@ -18,7 +18,7 @@
 #You should have received a copy of the GNU General Public License
 #along with sugarbot.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
+#import sys
 
 from sugar.activity import bundlebuilder
 bundlebuilder.start()
