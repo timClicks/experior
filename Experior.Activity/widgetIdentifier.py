@@ -46,10 +46,10 @@ class widgetIdentifier:
 	such as a list of strings that are default Widget names (e.g. 'GtkButton').
 	"""
 	identifiers = {}
-	
+
 	def __init__(self, widget):
 		self.widgetAttribute = "sugarbotWidgetIdentifier"
-		
+
 		self.dontWant = ["GtkToolbar", "GtkToggleButton","GtkButton",
 					"GtkEventBox", "GtkNotebook", "GtkViewport",
 					"HippoCanvas", "GtkTextView", "GtkInvisible",
@@ -62,20 +62,20 @@ class widgetIdentifier:
 					"GtkHButtonBox","GtkImageMenuItem","GtkSeparatorMenuItem",
 					"GtkSpinButton","GtkDrawingArea","GtkFrame",
 					"GtkColorButton", ""]
-					
+
 		self.dontWantPrefixes = ["Gtk", "sugar+graphics"]
 		self.setWidget(widget)
-		
+
 	def setWidget(self, widget):
 		self._widget		= widget
 		# self.getIdentifier()
-		
+
 	def getIdentifierSub(self):
 		"""
 		Overridden by inheriting classes.
 		"""
 		return None
-		
+
 	def getIdentifier(self):
 		"""
 		Returns the Identifier of the Widget set with __init__, or None
@@ -85,18 +85,18 @@ class widgetIdentifier:
 		# retrieve it quickly.
 		if self.checkStoredIdentifier():
 			return self.getStoredIdentifier()
-			
+
 		ident = None
 		widget = self._widget
-		
+
 		if hasattr(widget, "get_name"):
 			ident = widget.get_name()
-			
+
 		if not self.validateIdentifier(ident):
 			ident = self.getIdentifierSub()
-				
+
 		return self.setIdentifier(ident)
-		
+
 	def checkStoredIdentifier(self):
 		"""
 		Checks to see if we have previously identified this same Widget.
@@ -107,19 +107,19 @@ class widgetIdentifier:
 		 	and getattr(self._widget, self.widgetAttribute) is not None:
 			return True
 		return False
-		
+
 	def getStoredIdentifier(self):
 		"""
 		If the Widget has a stored identifier (see checkStoredIdentifier),
 		then retrieve the stored identifier's value.
-		
+
 		If the Widget does not have a stored identifier, return None.
 		"""
 		if self.checkStoredIdentifier():
 			return getattr(self._widget, self.widgetAttribute)
 		else:
 			return None
-		
+
 	def validateIdentifier(self,ident):
 		"""
 		Checks a proposed identifier against a series of criterium.  For
@@ -139,7 +139,7 @@ class widgetIdentifier:
 				if ident.startswith(prefix):
 					return False
 		return True
-		
+
 	def setIdentifier(self, ident):
 		"""
 		Sets the stored identifier for the Widget assigned by __init__.
@@ -158,33 +158,33 @@ class buttonIdentifier(widgetIdentifier):
 		
 		if hasattr(widget, "get_label"):
 			ident 	= widget.get_label()
-			
+
 		return ident
 widgetIdentifier.identifiers[gtk.Button] = buttonIdentifier
-		
+
 # class toolButtonIdentifier(widgetIdentifier):
 class toolButtonIdentifier(buttonIdentifier):
 	def getIdentifierSub(self):
 		ident 	= buttonIdentifier.getIdentifierSub(self)
 		widget 	= self._widget
-		
+
 		# Get the identifier using the icon
 		if not self.validateIdentifier(ident):
 			ico = None
 			ico = widget.get_icon_widget()
 			if isinstance(ico, Icon):
 				ident = ico.props.icon_name
-				
+
 		# Label did not give us a good ident, check the icon name
 		if not self.validateIdentifier(ident):
 			ident = widget.get_icon_name()
-		
+
 		# Icon did not give us a good ident, try the label
 		if not self.validateIdentifier(ident):
 			label = widget.get_label_widget()
 			if hasattr(label,"get_text"):
-				ident = label.get_text()			
-		
+				ident = label.get_text()
+
 		return ident
 widgetIdentifier.identifiers[gtk.ToolButton] = toolButtonIdentifier
 
@@ -192,10 +192,10 @@ class comboBoxIdentifier(widgetIdentifier):
 	def getIdentifierSub(self):
 		ident	= None
 		widget 	= self._widget
-		
+
 		if hasattr(widget, "get_title"):
 			ident = self._widget.get_title()
-			
+
 		return ident
 widgetIdentifier.identifiers[gtk.ComboBox] = comboBoxIdentifier
 
@@ -204,11 +204,11 @@ class entryIdentifier(widgetIdentifier):
 	def getIdentifierSub(self):	
 		ident 	= None
 		widget	= self._widget
-		
+
 		if not self.validateIdentifier(ident):
 			if hasattr(widget, "get_text"):
 				ident = self._widget.get_text()
-			
+
 		return ident
 widgetIdentifier.identifiers[gtk.Entry] = entryIdentifier
 
@@ -219,7 +219,7 @@ class paletteIdentifier(widgetIdentifier):
 
 		if hasattr(widget, "_primary_text"):
 			ident = getattr(widget,  "_primary_text")
-			
+
 		elif not self.validateIdentifier(ident):
 			if hasattr(widget, "props.primary_text"):
 				ident = getattr(widget, "props.primary_text")
@@ -255,6 +255,6 @@ class toolComboBoxIdentifier(widgetIdentifier):
 		# 		label = widget.label
 		# 		ident = label.get_text()
 		# </DEPRECATED> 
-				
+
 		return ident
 widgetIdentifier.identifiers[ToolComboBox] = toolComboBoxIdentifier
