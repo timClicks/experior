@@ -1,0 +1,23 @@
+experior
+========
+
+The experior projet aims to develop automated testing for
+the Sugar Learning Platform.
+
+
+Contact
+
+  TSM
+    @timClicks
+    <paperless@timmcnamara.co.nz>
+
+Short term goals
+----------------
+
+ - get things working from Sugarbot
+
+
+Medium term goals
+-----------------
+
+ - get dogtail working with Sugar, and deprecate experior
