@@ -62,8 +62,6 @@ class sugarbotSession():
 	log = property(lambda self: logging.getLogger(str(self.id)))
 	
 class sbRpcServer(SimpleXMLRPCServer):
-	sugarbotActivityVar = 'sugarActivityName'
-	
 	"""
 	Sugarbot RPC Server
 	
@@ -76,7 +74,9 @@ class sbRpcServer(SimpleXMLRPCServer):
 	The list of files, as well as each file's contents, are kept entirely in
 	memory.  This may lead to issues in the future with particularly large
 	script files, but this is currently not a problem.
-	"""		
+	"""
+	sugarbotActivityVar = 'sugarActivityName'
+
 	def __init__(self, args=[], xmlport=port, kill=False, restart=False):
 		# Random port?
 		if xmlport is None:
