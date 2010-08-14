@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# encoding: utf-8
+#! /usr/bin/env python
+# -*- encoding: utf-8 -*-
 
 # The host that the sugarbot clients should connect to in order to retrieve
 # the commands that they need to execute.
