@@ -1,0 +1,2 @@
+find . -type f | sed 's,^./,,g' > MANIFEST
+chmod -R a+x *.py

@@ -1,0 +1,7 @@
+[Activity]
+name = sugarbot
+service_name = org.laptop.sugarbot
+class = sugarbot.sugarbot
+icon = sugarbot
+activity_version = 1
+show_launcher = yes
