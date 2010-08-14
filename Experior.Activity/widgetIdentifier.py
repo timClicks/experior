@@ -29,10 +29,10 @@ import gtk
 from gtk import gdk
 
 import sugar
-from sugar 							import graphics
-from sugar.graphics.toolbutton 		import Palette
-from sugar.graphics.icon			import Icon
-from sugar.graphics.toolcombobox	import ToolComboBox
+from sugar import graphics
+from sugar.graphics.toolbutton import Palette
+from sugar.graphics.icon import Icon
+from sugar.graphics.toolcombobox import ToolComboBox
 
 class widgetIdentifier:
 	"""
