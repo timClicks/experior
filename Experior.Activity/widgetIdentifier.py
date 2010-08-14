@@ -45,7 +45,7 @@ class widgetIdentifier:
 	This class provides some of the functionality for identifying widgets,
 	such as a list of strings that are default Widget names (e.g. 'GtkButton').
 	"""
-	identifiers = { }
+	identifiers = {}
 	
 	def __init__(self, widget):
 		self.widgetAttribute = "sugarbotWidgetIdentifier"
