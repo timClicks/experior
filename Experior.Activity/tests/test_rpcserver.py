@@ -19,16 +19,22 @@ You should have received a copy of the GNU General Public License
 along with sugarbot.  If not, see <http://www.gnu.org/licenses/>.
 """
 import os
+import unittest
+from sys import path
+from random import randint
+
+from xmlrpclib import ServerProxy
+
+path.append("..")
+
 try:
 	import sbconfig
 except ImportError:
 	import sbconfig_sample
-
-from random import randint
 from sbrpcserver import *
-from xmlrpclib import ServerProxy
 
-class test_rpcServer:
+
+class TestRPCServer(unittest.TestCase):
 	
 	files 			= ["fileOne.py", "fileTwo.py"]
 	activityNames 	= ["activityOne", "activityTwo"]
@@ -140,4 +146,6 @@ def sugarbot_main(var):
 		for script in self.scripts:
 			self.server.startScript()
 			assert self.server.getScript() == script
-		
+
+if __name__ == "__main__":
+	unittest.main()
