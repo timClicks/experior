@@ -77,7 +77,7 @@ class sbRpcServer(SimpleXMLRPCServer):
 	"""
 	sugarbotActivityVar = 'sugarActivityName'
 
-	def __init__(self, args=[], xmlport=port, kill=False, restart=False):
+	def __init__(self, scripts=[], xmlport=port, kill=False, restart=False):
 		# Random port?
 		if xmlport is None:
 			xmlport = random.randint(1024,65000)
@@ -101,10 +101,9 @@ class sbRpcServer(SimpleXMLRPCServer):
 		self.kill			= kill
 		self.restart		= restart
 		self.log.info("Kill: %s\tRestart: %s" % (kill,restart))
-		
-		# All of the arguments should be filenames for files to parse.
-		for arg in args:
-			self.addScript(arg)
+
+		for script in scripts:
+			self.addScript(script)
 		
 		# Register all of the functions so that callers can use them
 		self.registerFunctions()
