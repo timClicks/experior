@@ -63,6 +63,10 @@ class WidgetIdentifier:
                     "GtkColorButton", ""]
 
         self.dontWantPrefixes = ["Gtk", "sugar+graphics"]
+
+#        self.dontWant = ['',]
+#        self.dontWantPrefixes = ["",]
+
         self.setWidget(widget)
 
     def setWidget(self, widget):
@@ -151,13 +155,10 @@ class WidgetIdentifier:
 
 class ButtonIdentifier(WidgetIdentifier):
     def getIdentifierSub(self):
-        ident   = None
-        widget  = self._widget
-
-        if hasattr(widget, "get_label"):
-            ident   = widget.get_label()
-
-        return ident
+        try:
+            return self._widget.get_label()
+        except AttributeError:
+            return None
 
 # class ToolButtonIdentifier(WidgetIdentifier):
 class ToolButtonIdentifier(ButtonIdentifier):
