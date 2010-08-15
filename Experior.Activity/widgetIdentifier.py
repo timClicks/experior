@@ -1,7 +1,7 @@
 #! /usr/bin/env python
-# -*- encoding: utf-8 -*- 
+# -*- encoding: utf-8 -*-
 
-#widgetIdentifier.py
+#WidgetIdentifier.py
 
 #This file is part of sugarbot.
 
@@ -34,227 +34,226 @@ from sugar.graphics.toolbutton import Palette
 from sugar.graphics.icon import Icon
 from sugar.graphics.toolcombobox import ToolComboBox
 
-class widgetIdentifier:
-	"""
-	The widgetIdentifier class is used as a basis for classes to identify
-	Widgets.  Ideally, all developers would call Widget.set_name() on all
-	widgets created by their Activities.  Since this is not always
-	practical or worthwhile, we must rely on other methods to identify
-	widgets.
-	
-	This class provides some of the functionality for identifying widgets,
-	such as a list of strings that are default Widget names (e.g. 'GtkButton').
-	"""
-	identifiers = {}
+class WidgetIdentifier:
+    """
+    The WidgetIdentifier class is used as a basis for classes to identify
+    Widgets.  Ideally, all developers would call Widget.set_name() on all
+    widgets created by their Activities.  Since this is not always
+    practical or worthwhile, we must rely on other methods to identify
+    widgets.
 
-	def __init__(self, widget):
-		self.widgetAttribute = "sugarbotWidgetIdentifier"
+    This class provides some of the functionality for identifying widgets,
+    such as a list of strings that are default Widget names (e.g. 'GtkButton').
+    """
 
-		self.dontWant = ["GtkToolbar", "GtkToggleButton","GtkButton",
-					"GtkEventBox", "GtkNotebook", "GtkViewport",
-					"HippoCanvas", "GtkTextView", "GtkInvisible",
-					"GtkEntry", "GtkLabel", "GtkVBox", "GtkHBox",
-					"SugarIcon","SugarToolButton","GtkAlignment",
-					"GtkSeparatorToolItem","GtkTable","SugarToolbox",
-					"GtkToggleToolButton","GtkScrolledWindow","GtkCellView",
-					"GtkVSeparator","GtkArrow","GtkToolItem","GtkAccelLabel",
-					"SugarComboBox","SugarToggleToolButton","GtkHSeparator",
-					"GtkHButtonBox","GtkImageMenuItem","GtkSeparatorMenuItem",
-					"GtkSpinButton","GtkDrawingArea","GtkFrame",
-					"GtkColorButton", ""]
+    def __init__(self, widget):
+        self.widgetAttribute = "sugarbotWidgetIdentifier"
 
-		self.dontWantPrefixes = ["Gtk", "sugar+graphics"]
-		self.setWidget(widget)
+        self.dontWant = ["GtkToolbar", "GtkToggleButton","GtkButton",
+                    "GtkEventBox", "GtkNotebook", "GtkViewport",
+                    "HippoCanvas", "GtkTextView", "GtkInvisible",
+                    "GtkEntry", "GtkLabel", "GtkVBox", "GtkHBox",
+                    "SugarIcon","SugarToolButton","GtkAlignment",
+                    "GtkSeparatorToolItem","GtkTable","SugarToolbox",
+                    "GtkToggleToolButton","GtkScrolledWindow","GtkCellView",
+                    "GtkVSeparator","GtkArrow","GtkToolItem","GtkAccelLabel",
+                    "SugarComboBox","SugarToggleToolButton","GtkHSeparator",
+                    "GtkHButtonBox","GtkImageMenuItem","GtkSeparatorMenuItem",
+                    "GtkSpinButton","GtkDrawingArea","GtkFrame",
+                    "GtkColorButton", ""]
 
-	def setWidget(self, widget):
-		self._widget		= widget
-		# self.getIdentifier()
+        self.dontWantPrefixes = ["Gtk", "sugar+graphics"]
+        self.setWidget(widget)
 
-	def getIdentifierSub(self):
-		"""
-		Overridden by inheriting classes.
-		"""
-		return None
+    def setWidget(self, widget):
+        self._widget        = widget
+        # self.getIdentifier()
 
-	def getIdentifier(self):
-		"""
-		Returns the Identifier of the Widget set with __init__, or None
-		if we cannot find an identifier.  Do not override this function!
-		"""
-		# If we have already set the attribute for this widget, just
-		# retrieve it quickly.
-		if self.checkStoredIdentifier():
-			return self.getStoredIdentifier()
+    def getIdentifierSub(self):
+        """
+        Overridden by inheriting classes.
+        """
+        return None
 
-		ident = None
-		widget = self._widget
+    def getIdentifier(self):
+        """
+        Returns the Identifier of the Widget set with __init__, or None
+        if we cannot find an identifier.  Do not override this function!
+        """
+        # If we have already set the attribute for this widget, just
+        # retrieve it quickly.
+        if self.checkStoredIdentifier():
+            return self.getStoredIdentifier()
 
-		if hasattr(widget, "get_name"):
-			ident = widget.get_name()
+        ident = None
+        widget = self._widget
 
-		if not self.validateIdentifier(ident):
-			ident = self.getIdentifierSub()
+        if hasattr(widget, "get_name"):
+            ident = widget.get_name()
 
-		return self.setIdentifier(ident)
+        if not self.validateIdentifier(ident):
+            ident = self.getIdentifierSub()
 
-	def checkStoredIdentifier(self):
-		"""
-		Checks to see if we have previously identified this same Widget.
-		If we have, the Widget will have an attribute as defined by
-		widgetIdentifier.widgetAttribute.
-		"""
-		if hasattr(self._widget, self.widgetAttribute) \
-		 	and getattr(self._widget, self.widgetAttribute) is not None:
-			return True
-		return False
+        return self.setIdentifier(ident)
 
-	def getStoredIdentifier(self):
-		"""
-		If the Widget has a stored identifier (see checkStoredIdentifier),
-		then retrieve the stored identifier's value.
+    def checkStoredIdentifier(self):
+        """
+        Checks to see if we have previously identified this same Widget.
+        If we have, the Widget will have an attribute as defined by
+        WidgetIdentifier.widgetAttribute.
+        """
+        if hasattr(self._widget, self.widgetAttribute) \
+            and getattr(self._widget, self.widgetAttribute) is not None:
+            return True
+        return False
 
-		If the Widget does not have a stored identifier, return None.
-		"""
-		if self.checkStoredIdentifier():
-			return getattr(self._widget, self.widgetAttribute)
-		else:
-			return None
+    def getStoredIdentifier(self):
+        """
+        If the Widget has a stored identifier (see checkStoredIdentifier),
+        then retrieve the stored identifier's value.
 
-	def validateIdentifier(self,ident):
-		"""
-		Checks a proposed identifier against a series of criterium.  For
-		example, empty strings, and blacklisted strings, as well as
-		blacklisted prefixes, may rule out an identifier for use.
-		"""
-		if ident is None:
-			return False
-		elif not isinstance(ident, str):
-			return False
-		elif len(ident) < 1:
-			return False
-		elif ident in self.dontWant:
-			return False
-		else:
-			for prefix in self.dontWantPrefixes:
-				if ident.startswith(prefix):
-					return False
-		return True
+        If the Widget does not have a stored identifier, return None.
+        """
+        if self.checkStoredIdentifier():
+            return getattr(self._widget, self.widgetAttribute)
+        else:
+            return None
 
-	def setIdentifier(self, ident):
-		"""
-		Sets the stored identifier for the Widget assigned by __init__.
-		"""
-		if self.validateIdentifier(ident):
-			setattr(self._widget, self.widgetAttribute, ident)
-			return ident
-		return None
-widgetIdentifier.identifiers[gtk.Widget] = widgetIdentifier
+    def validateIdentifier(self,ident):
+        """
+        Checks a proposed identifier against a series of criteria.  For
+        example, empty strings, and blacklisted strings, as well as
+        blacklisted prefixes, may rule out an identifier for use.
+        """
+        if ident is None:
+            return False
+        elif not isinstance(ident, str):
+            return False
+        elif len(ident) < 1:
+            return False
+        elif ident in self.dontWant:
+            return False
+        else:
+            for prefix in self.dontWantPrefixes:
+                if ident.startswith(prefix):
+                    return False
+        return True
+
+    def setIdentifier(self, ident):
+        """
+        Sets the stored identifier for the Widget assigned by __init__.
+        """
+        if self.validateIdentifier(ident):
+            setattr(self._widget, self.widgetAttribute, ident)
+            return ident
+        return None
 
 
-class buttonIdentifier(widgetIdentifier):
-	def getIdentifierSub(self):
-		ident 	= None
-		widget 	= self._widget
-		
-		if hasattr(widget, "get_label"):
-			ident 	= widget.get_label()
+class ButtonIdentifier(WidgetIdentifier):
+    def getIdentifierSub(self):
+        ident   = None
+        widget  = self._widget
 
-		return ident
-widgetIdentifier.identifiers[gtk.Button] = buttonIdentifier
+        if hasattr(widget, "get_label"):
+            ident   = widget.get_label()
 
-# class toolButtonIdentifier(widgetIdentifier):
-class toolButtonIdentifier(buttonIdentifier):
-	def getIdentifierSub(self):
-		ident 	= buttonIdentifier.getIdentifierSub(self)
-		widget 	= self._widget
+        return ident
 
-		# Get the identifier using the icon
-		if not self.validateIdentifier(ident):
-			ico = None
-			ico = widget.get_icon_widget()
-			if isinstance(ico, Icon):
-				ident = ico.props.icon_name
+# class ToolButtonIdentifier(WidgetIdentifier):
+class ToolButtonIdentifier(ButtonIdentifier):
+    def getIdentifierSub(self):
+        ident   = ButtonIdentifier.getIdentifierSub(self)
+        widget  = self._widget
 
-		# Label did not give us a good ident, check the icon name
-		if not self.validateIdentifier(ident):
-			ident = widget.get_icon_name()
+        # Get the identifier using the icon
+        if not self.validateIdentifier(ident):
+            ico = None
+            ico = widget.get_icon_widget()
+            if isinstance(ico, Icon):
+                ident = ico.props.icon_name
 
-		# Icon did not give us a good ident, try the label
-		if not self.validateIdentifier(ident):
-			label = widget.get_label_widget()
-			if hasattr(label,"get_text"):
-				ident = label.get_text()
+        # Label did not give us a good ident, check the icon name
+        if not self.validateIdentifier(ident):
+            ident = widget.get_icon_name()
 
-		return ident
-widgetIdentifier.identifiers[gtk.ToolButton] = toolButtonIdentifier
+        # Icon did not give us a good ident, try the label
+        if not self.validateIdentifier(ident):
+            label = widget.get_label_widget()
+            if hasattr(label,"get_text"):
+                ident = label.get_text()
 
-class comboBoxIdentifier(widgetIdentifier):
-	def getIdentifierSub(self):
-		ident	= None
-		widget 	= self._widget
+        return ident
 
-		if hasattr(widget, "get_title"):
-			ident = self._widget.get_title()
+class ComboBoxIdentifier(WidgetIdentifier):
+    def getIdentifierSub(self):
+        ident   = None
+        widget  = self._widget
 
-		return ident
-widgetIdentifier.identifiers[gtk.ComboBox] = comboBoxIdentifier
+        if hasattr(widget, "get_title"):
+            ident = self._widget.get_title()
 
+        return ident
 
-class entryIdentifier(widgetIdentifier):
-	def getIdentifierSub(self):	
-		ident 	= None
-		widget	= self._widget
+class EntryIdentifier(WidgetIdentifier):
+    def getIdentifierSub(self):
+        ident   = None
+        widget  = self._widget
 
-		if not self.validateIdentifier(ident):
-			if hasattr(widget, "get_text"):
-				ident = self._widget.get_text()
+        if not self.validateIdentifier(ident):
+            if hasattr(widget, "get_text"):
+                ident = self._widget.get_text()
 
-		return ident
-widgetIdentifier.identifiers[gtk.Entry] = entryIdentifier
+        return ident
 
-class paletteIdentifier(widgetIdentifier):
-	def getIdentifierSub(self):		
-		ident  = None
-		widget = self._widget
+class PaletteIdentifier(WidgetIdentifier):
+    def getIdentifierSub(self):
+        ident  = None
+        widget = self._widget
 
-		if hasattr(widget, "_primary_text"):
-			ident = getattr(widget,  "_primary_text")
+        if hasattr(widget, "_primary_text"):
+            ident = getattr(widget,  "_primary_text")
 
-		elif not self.validateIdentifier(ident):
-			if hasattr(widget, "props.primary_text"):
-				ident = getattr(widget, "props.primary_text")
+        elif not self.validateIdentifier(ident):
+            if hasattr(widget, "props.primary_text"):
+                ident = getattr(widget, "props.primary_text")
 
-		return ident
-widgetIdentifier.identifiers[Palette] = paletteIdentifier
+        return ident
 
+class ToolComboBoxIdentifier(WidgetIdentifier):
+    def getIdentifierSub(self):
+        ident  = None
+        widget = self._widget
 
-class toolComboBoxIdentifier(widgetIdentifier):
-	def getIdentifierSub(self):
-		ident  = None
-		widget = self._widget
+        if hasattr(widget, "_label_text"):
+            ident = getattr(widget, "_label_text")
+            print ident
 
-		if hasattr(widget, "_label_text"):
-			ident = getattr(widget, "_label_text")
-			print ident
+        # if not self.validateIdentifier(ident):
+        #   try:
+        #       print "@@@"
+        #       ident = widget.get_property("label-text")
+        #       print ident
+        #   except TypeError:
+        #       raise
 
-		# if not self.validateIdentifier(ident):
-		# 	try:
-		# 		print "@@@"
-		# 		ident = widget.get_property("label-text")
-		# 		print ident
-		# 	except TypeError:
-		# 		raise
-		
-		# <DEPRECATED>
-		# if not self.validateIdentifier(ident):
-		# 	if hasattr(widget, "_label_text"):
-		# 		ident = getattr(widget, "_label_text")
-		# 	
-		# elif not self.validateIdentifier(ident):
-		# 	if hasattr(widget, "label"):
-		# 		label = widget.label
-		# 		ident = label.get_text()
-		# </DEPRECATED> 
+        # <DEPRECATED>
+        # if not self.validateIdentifier(ident):
+        #   if hasattr(widget, "_label_text"):
+        #       ident = getattr(widget, "_label_text")
+        #
+        # elif not self.validateIdentifier(ident):
+        #   if hasattr(widget, "label"):
+        #       label = widget.label
+        #       ident = label.get_text()
+        # </DEPRECATED>
 
-		return ident
-widgetIdentifier.identifiers[ToolComboBox] = toolComboBoxIdentifier
+        return ident
+
+identifiers = {}
+identifiers[gtk.Entry] = EntryIdentifier
+identifiers[Palette] = PaletteIdentifier
+identifiers[ToolComboBox] = ToolComboBoxIdentifier
+identifiers[gtk.ComboBox] = ComboBoxIdentifier
+identifiers[gtk.ToolButton] = ToolButtonIdentifier
+identifiers[gtk.Button] = ButtonIdentifier
+identifiers[gtk.Widget] = WidgetIdentifier
