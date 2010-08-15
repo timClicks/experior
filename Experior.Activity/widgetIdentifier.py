@@ -45,7 +45,6 @@ class widgetIdentifier:
     This class provides some of the functionality for identifying widgets,
     such as a list of strings that are default Widget names (e.g. 'GtkButton').
     """
-    identifiers = {}
 
     def __init__(self, widget):
         self.widgetAttribute = "sugarbotWidgetIdentifier"
@@ -148,7 +147,6 @@ class widgetIdentifier:
             setattr(self._widget, self.widgetAttribute, ident)
             return ident
         return None
-widgetIdentifier.identifiers[gtk.Widget] = widgetIdentifier
 
 
 class buttonIdentifier(widgetIdentifier):
@@ -160,7 +158,6 @@ class buttonIdentifier(widgetIdentifier):
             ident   = widget.get_label()
 
         return ident
-widgetIdentifier.identifiers[gtk.Button] = buttonIdentifier
 
 # class toolButtonIdentifier(widgetIdentifier):
 class toolButtonIdentifier(buttonIdentifier):
@@ -186,7 +183,6 @@ class toolButtonIdentifier(buttonIdentifier):
                 ident = label.get_text()
 
         return ident
-widgetIdentifier.identifiers[gtk.ToolButton] = toolButtonIdentifier
 
 class comboBoxIdentifier(widgetIdentifier):
     def getIdentifierSub(self):
@@ -197,8 +193,6 @@ class comboBoxIdentifier(widgetIdentifier):
             ident = self._widget.get_title()
 
         return ident
-widgetIdentifier.identifiers[gtk.ComboBox] = comboBoxIdentifier
-
 
 class entryIdentifier(widgetIdentifier):
     def getIdentifierSub(self):
@@ -210,7 +204,6 @@ class entryIdentifier(widgetIdentifier):
                 ident = self._widget.get_text()
 
         return ident
-widgetIdentifier.identifiers[gtk.Entry] = entryIdentifier
 
 class paletteIdentifier(widgetIdentifier):
     def getIdentifierSub(self):
@@ -225,8 +218,6 @@ class paletteIdentifier(widgetIdentifier):
                 ident = getattr(widget, "props.primary_text")
 
         return ident
-widgetIdentifier.identifiers[Palette] = paletteIdentifier
-
 
 class toolComboBoxIdentifier(widgetIdentifier):
     def getIdentifierSub(self):
@@ -257,4 +248,12 @@ class toolComboBoxIdentifier(widgetIdentifier):
         # </DEPRECATED>
 
         return ident
-widgetIdentifier.identifiers[ToolComboBox] = toolComboBoxIdentifier
+
+identifiers = {}
+identifiers[gtk.Entry] = entryIdentifier
+identifiers[Palette] = paletteIdentifier
+identifiers[ToolComboBox] = toolComboBoxIdentifier
+identifiers[gtk.ComboBox] = comboBoxIdentifier
+identifiers[gtk.ToolButton] = toolButtonIdentifier
+identifiers[gtk.Button] = buttonIdentifier
+identifiers[gtk.Widget] = widgetIdentifier
