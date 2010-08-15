@@ -97,7 +97,7 @@ class sbGUI(gobject.GObject):
         @param widget - The widget whose identifier is to be retrieved.
         """
         if not isinstance(widget,gtk.Widget):
-            raise "_getWidgetName must take a gtk.Widget object as its argument"
+            raise ValueError("_getWidgetName must take a gtk.Widget object as its argument")
 
         # ---- GENERIC APPROACH ----
         # Assuming that the widget was named explicitly by the developers,
