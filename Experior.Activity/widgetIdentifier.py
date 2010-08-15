@@ -163,27 +163,46 @@ class ButtonIdentifier(WidgetIdentifier):
 # class ToolButtonIdentifier(WidgetIdentifier):
 class ToolButtonIdentifier(ButtonIdentifier):
     def getIdentifierSub(self):
-        ident   = ButtonIdentifier.getIdentifierSub(self)
-        widget  = self._widget
+        ident = ButtonIdentifier.getIdentifierSub(self)
+        if self.validateIdentifier(ident): return ident
+        widget = self._widget
 
-        # Get the identifier using the icon
-        if not self.validateIdentifier(ident):
-            ico = None
-            ico = widget.get_icon_widget()
-            if isinstance(ico, Icon):
-                ident = ico.props.icon_name
+        lw = widget.get_label_widget()
+        if lw is not None:
+            try:
+                #hopefully it's just a gtk.Label
+                ident = lw.get_text()
+            except AttributeError:
+                try:
+                    ident = identifiers[lw.get_name()](lw)
+                except AttributeError:
+                    ident = None
+            if self.validateIdentifier(ident): return ident
 
-        # Label did not give us a good ident, check the icon name
-        if not self.validateIdentifier(ident):
-            ident = widget.get_icon_name()
+        lab = widget.get_label()
+        if lab is not None and self.validateIdentifier(lab):
+            return lab
 
-        # Icon did not give us a good ident, try the label
-        if not self.validateIdentifier(ident):
-            label = widget.get_label_widget()
-            if hasattr(label,"get_text"):
-                ident = label.get_text()
+        #icon_widget
+        iw = widget.get_icon_widget()
+        if iw is not None:
+            try:
+                ident = iw.props.icon_name
+            except AttributeError:
+                try:
+                    ident= iw.get_text()
+                except AttributeError:
+                    try:
+                        ident = identifiers[iw.get_name()](iw)
+                    except AttributeError:
+                        ident = None
+            if self.validateIdentifier(ident): return ident
 
-        return ident
+        icon_n = widget.get_icon_name()
+        if icon_n is not None:
+            if self.validateIdentifier(icon_n): return icon_n
+
+        return widget.get_stock_id()
 
 class ComboBoxIdentifier(WidgetIdentifier):
     def getIdentifierSub(self):

@@ -22,7 +22,7 @@ def test_set_name_matches():
     assert W.getIdentifier() == '1'
 
 
-B = ButtonIdentifier(gtk.Button('Stop'))
+B = ToolButtonIdentifier(gtk.Button('Stop'))
 def test_button_id():
     assert B.getIdentifier() == 'Stop'
 
