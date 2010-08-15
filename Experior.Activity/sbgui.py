@@ -103,7 +103,7 @@ class sbGUI(gobject.GObject):
         # Assuming that the widget was named explicitly by the developers,
         # getting the name should be very straightforward, with no specialized
         # cases or special name-detecting.
-        widId = widgetIdentifier(widget)
+        widId = WidgetIdentifier(widget)
         ident = widId.getIdentifier()
 
         if ident is not None:

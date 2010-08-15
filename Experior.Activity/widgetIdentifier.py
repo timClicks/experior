@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-#widgetIdentifier.py
+#WidgetIdentifier.py
 
 #This file is part of sugarbot.
 
@@ -34,9 +34,9 @@ from sugar.graphics.toolbutton import Palette
 from sugar.graphics.icon import Icon
 from sugar.graphics.toolcombobox import ToolComboBox
 
-class widgetIdentifier:
+class WidgetIdentifier:
     """
-    The widgetIdentifier class is used as a basis for classes to identify
+    The WidgetIdentifier class is used as a basis for classes to identify
     Widgets.  Ideally, all developers would call Widget.set_name() on all
     widgets created by their Activities.  Since this is not always
     practical or worthwhile, we must rely on other methods to identify
@@ -100,7 +100,7 @@ class widgetIdentifier:
         """
         Checks to see if we have previously identified this same Widget.
         If we have, the Widget will have an attribute as defined by
-        widgetIdentifier.widgetAttribute.
+        WidgetIdentifier.widgetAttribute.
         """
         if hasattr(self._widget, self.widgetAttribute) \
             and getattr(self._widget, self.widgetAttribute) is not None:
@@ -149,7 +149,7 @@ class widgetIdentifier:
         return None
 
 
-class buttonIdentifier(widgetIdentifier):
+class ButtonIdentifier(WidgetIdentifier):
     def getIdentifierSub(self):
         ident   = None
         widget  = self._widget
@@ -159,10 +159,10 @@ class buttonIdentifier(widgetIdentifier):
 
         return ident
 
-# class toolButtonIdentifier(widgetIdentifier):
-class toolButtonIdentifier(buttonIdentifier):
+# class ToolButtonIdentifier(WidgetIdentifier):
+class ToolButtonIdentifier(ButtonIdentifier):
     def getIdentifierSub(self):
-        ident   = buttonIdentifier.getIdentifierSub(self)
+        ident   = ButtonIdentifier.getIdentifierSub(self)
         widget  = self._widget
 
         # Get the identifier using the icon
@@ -184,7 +184,7 @@ class toolButtonIdentifier(buttonIdentifier):
 
         return ident
 
-class comboBoxIdentifier(widgetIdentifier):
+class ComboBoxIdentifier(WidgetIdentifier):
     def getIdentifierSub(self):
         ident   = None
         widget  = self._widget
@@ -194,7 +194,7 @@ class comboBoxIdentifier(widgetIdentifier):
 
         return ident
 
-class entryIdentifier(widgetIdentifier):
+class EntryIdentifier(WidgetIdentifier):
     def getIdentifierSub(self):
         ident   = None
         widget  = self._widget
@@ -205,7 +205,7 @@ class entryIdentifier(widgetIdentifier):
 
         return ident
 
-class paletteIdentifier(widgetIdentifier):
+class PaletteIdentifier(WidgetIdentifier):
     def getIdentifierSub(self):
         ident  = None
         widget = self._widget
@@ -219,7 +219,7 @@ class paletteIdentifier(widgetIdentifier):
 
         return ident
 
-class toolComboBoxIdentifier(widgetIdentifier):
+class ToolComboBoxIdentifier(WidgetIdentifier):
     def getIdentifierSub(self):
         ident  = None
         widget = self._widget
@@ -250,10 +250,10 @@ class toolComboBoxIdentifier(widgetIdentifier):
         return ident
 
 identifiers = {}
-identifiers[gtk.Entry] = entryIdentifier
-identifiers[Palette] = paletteIdentifier
-identifiers[ToolComboBox] = toolComboBoxIdentifier
-identifiers[gtk.ComboBox] = comboBoxIdentifier
-identifiers[gtk.ToolButton] = toolButtonIdentifier
-identifiers[gtk.Button] = buttonIdentifier
-identifiers[gtk.Widget] = widgetIdentifier
+identifiers[gtk.Entry] = EntryIdentifier
+identifiers[Palette] = PaletteIdentifier
+identifiers[ToolComboBox] = ToolComboBoxIdentifier
+identifiers[gtk.ComboBox] = ComboBoxIdentifier
+identifiers[gtk.ToolButton] = ToolButtonIdentifier
+identifiers[gtk.Button] = ButtonIdentifier
+identifiers[gtk.Widget] = WidgetIdentifier
